@@ -80,7 +80,8 @@ let people=[], view='mandat', searchTerm='', editingId=null, currentId=null;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const priorityLabel=p=>p==='high'?'ÉLEVÉE':p==='medium'?'MOYENNE':'FAIBLE';
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY));people=Array.isArray(x?.people)?x.people:structuredClone(window.APP_DATA.people)}catch(e){people=structuredClone(window.APP_DATA.people)}}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));people=Array.isArray(x?.people)?x.people:structuredClone(window.APP_DATA.people);
+people.forEach(p=>{p.addresses=Array.isArray(p.addresses)?p.addresses:(p.addresses?String(p.addresses).replace(/\\r/g,'').split('\\n').map(x=>x.trim()).filter(Boolean):[])})}catch(e){people=structuredClone(window.APP_DATA.people)}}
 function save(){localStorage.setItem(KEY,JSON.stringify({version:'V1.0',savedAt:new Date().toISOString(),people}));toast('✓ Sauvegardé sur cet appareil');}
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
 function matches(p){const q=searchTerm.trim().toLowerCase();if(!q)return true;return [p.name,p.nickname,p.description,p.mandat,p.info,...(p.vehicles||[]),...(p.addresses||[]),...(p.conditions||[])].join(' ').toLowerCase().includes(q)}
@@ -147,7 +148,7 @@ function savePerson(){
  const name=$('fName').value.trim();if(!name)return toast('Le nom est requis.');
  const existing=editingId?people.find(x=>x.id===editingId):null;
  const p=existing||{id:'p-'+Date.now(),comments:[],photos:[],status:'active'};
- Object.assign(p,{name,nickname:$('fNick').value.trim(),dob:$('fDob').value,priority:$('fPriority').value,type:$('fType').value,mandat:$('fMandat').value.trim(),conditions:$('fConditions').value.split('\\n').map(x=>x.trim()).filter(Boolean),description:$('fDescription').value.trim(),vehicles:$('fVehicles').value.split('\\n').map(x=>x.trim()).filter(Boolean),addresses:$('fAddresses').value.split('\\n').map(x=>x.trim()).filter(Boolean),info:$('fInfo').value.trim()});
+ Object.assign(p,{name,nickname:$('fNick').value.trim(),dob:$('fDob').value,priority:$('fPriority').value,type:$('fType').value,mandat:$('fMandat').value.trim(),conditions:$('fConditions').value.split('\\n').map(x=>x.trim()).filter(Boolean),description:$('fDescription').value.trim(),vehicles:$('fVehicles').value.split('\\n').map(x=>x.trim()).filter(Boolean),addresses:$('fAddresses').value.replace(/\\r/g,'').split('\\n').map(x=>x.trim()).filter(Boolean),info:$('fInfo').value.trim()});
  if(!existing)people.push(p);save();closeEdit();render();openDetail(p.id);
 }
 function closeEdit(){$('editOverlay').classList.remove('show');editingId=null}
