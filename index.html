@@ -26,6 +26,11 @@ main{max-width:780px;margin:auto;padding:13px 14px calc(100px + env(safe-area-in
 .field{margin-top:12px}.field label{display:block;font-size:13px;font-weight:850;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 12px;outline:0}.field textarea{min-height:82px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font-weight:800}.btn.primary{background:#111;color:#fff;border-color:#111}.btn.danger{color:#b42318}.btn.green{color:#176b42}.btn.full{flex:1}
 .detailHeader{display:flex;gap:12px;align-items:center}.detailPhoto{width:88px;height:88px;border-radius:18px;object-fit:cover;background:#e9ebef;flex:0 0 auto}.detailName{font-size:25px;font-weight:950;line-height:1.05}.detailNick{color:var(--muted);margin-top:4px}.block{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px;margin-top:11px}.block h3{margin:0 0 9px;font-size:16px}.infoRow{padding:8px 0;border-top:1px solid var(--line)}.infoRow:first-child{border-top:0;padding-top:0}.infoLabel{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:850}.infoValue{font-size:15px;line-height:1.45;margin-top:2px;white-space:pre-wrap;overflow-wrap:anywhere}.listItem{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-top:1px solid var(--line)}.listItem:first-child{border-top:0;padding-top:0}.removeMini{border:0;background:#f2f3f5;border-radius:9px;padding:4px 7px}.comment{border-top:1px solid var(--line);padding:10px 0}.comment:first-child{border-top:0;padding-top:0}.commentMeta{font-size:11px;color:var(--muted);font-weight:800}.commentText{margin-top:4px;white-space:pre-wrap;line-height:1.45}.photoGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.photoGrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px;background:#eee}.photoControls{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
 .toast{position:fixed;left:50%;bottom:calc(87px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(15px);background:#111;color:#fff;padding:10px 14px;border-radius:12px;font-weight:800;opacity:0;pointer-events:none;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.aiImport{display:block;width:100%;max-width:780px;margin:9px auto 0;border:1px solid #cfd8ff;background:#eef2ff;color:#253b8e;border-radius:14px;padding:11px 12px;font-weight:900}
+.aiImport:disabled{opacity:.6}
+.aiNotice{margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff4d6;border:1px solid #f0d58a;color:#6f5200;font-size:13px;font-weight:800}
+.aiUncertain{margin-top:8px;padding:9px 11px;border-radius:11px;background:#fde8e7;color:#9b2118;font-size:13px;font-weight:800}
 @media(min-width:700px){.overlay{align-items:center;padding:20px}.sheet{max-width:780px;border-radius:22px;max-height:88vh}}
 </style>
 </head>
@@ -34,6 +39,7 @@ main{max-width:780px;margin:auto;padding:13px 14px calc(100px + env(safe-area-in
   <div class="top"><div class="brand">👮 Mandats & Conditions</div><button class="save" id="saveBtn">💾 Sauvegarder</button></div>
   <div class="search">🔎 <input id="search" placeholder="Rechercher une personne..."></div>
   <div class="tabs"><button class="tab active" id="mandatsTab">🔴 Mandats</button><button class="tab" id="conditionsTab">🟠 Conditions</button></div>
+  <button class="aiImport" id="aiImportBtn">🤖 Importer une fiche avec l’IA</button>
 </header>
 
 <main>
@@ -53,6 +59,7 @@ main{max-width:780px;margin:auto;padding:13px 14px calc(100px + env(safe-area-in
 
 <div class="overlay" id="editOverlay"><div class="sheet"><div class="sheetInner">
   <div class="modalTop"><h2 id="editTitle">Ajouter une personne</h2><button class="close" id="closeEdit">×</button></div>
+  <div id="aiNotice" class="aiNotice" style="display:none"></div>
   <div class="field"><label>Nom</label><input id="fName" placeholder="Nom et prénom"></div>
   <div class="field"><label>Surnom</label><input id="fNick" placeholder="Surnom"></div>
   <div class="row">
@@ -72,6 +79,7 @@ main{max-width:780px;margin:auto;padding:13px 14px calc(100px + env(safe-area-in
 <input type="file" id="photoInput" accept="image/*" hidden>
 <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
 <input type="file" id="importInput" accept=".json,application/json" hidden>
+<input type="file" id="aiInput" accept="image/*" hidden>
 
 <script src="data.js"></script>
 <script>
@@ -141,6 +149,7 @@ function deletePerson(id){const p=people.find(x=>x.id===id);if(!p)return;if(!con
 function closeDetail(){$('detailOverlay').classList.remove('show');currentId=null}
 function openEdit(id=null){editingId=id;const p=id?people.find(x=>x.id===id):{name:'',nickname:'',dob:'',priority:'medium',type:view,mandat:'',conditions:[],description:'',vehicles:[],addresses:[],info:'',comments:[],photos:[],status:'active'};if(!p)return;
  $('editTitle').textContent=id?'Modifier la personne':'Ajouter une personne';
+ $('aiNotice').style.display='none'; $('aiNotice').textContent='';
  $('fName').value=p.name||'';$('fNick').value=p.nickname||'';$('fDob').value=p.dob||'';$('fPriority').value=p.priority||'medium';$('fType').value=p.type||view;$('fMandat').value=p.mandat||'';$('fConditions').value=(p.conditions||[]).join('\\n');$('fDescription').value=p.description||'';$('fVehicles').value=(p.vehicles||[]).join('\\n');$('fAddresses').value=(p.addresses||[]).join('\\n');$('fInfo').value=p.info||'';
  $('editOverlay').classList.add('show');
 }
@@ -150,6 +159,41 @@ function savePerson(){
  const p=existing||{id:'p-'+Date.now(),comments:[],photos:[],status:'active'};
  Object.assign(p,{name,nickname:$('fNick').value.trim(),dob:$('fDob').value,priority:$('fPriority').value,type:$('fType').value,mandat:$('fMandat').value.trim(),conditions:$('fConditions').value.split('\\n').map(x=>x.trim()).filter(Boolean),description:$('fDescription').value.trim(),vehicles:$('fVehicles').value.split('\\n').map(x=>x.trim()).filter(Boolean),addresses:$('fAddresses').value.replace(/\\r/g,'').split('\\n').map(x=>x.trim()).filter(Boolean),info:$('fInfo').value.trim()});
  if(!existing)people.push(p);save();closeEdit();render();openDetail(p.id);
+}
+async function resizeForAI(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('Impossible de lire l’image.'));
+    reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('Image invalide.'));img.onload=()=>{
+      const max=1800,scale=Math.min(1,max/Math.max(img.width,img.height));
+      const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.82));
+    };img.src=reader.result};reader.readAsDataURL(file);
+  });
+}
+async function importWithAI(file){
+  if(!file?.type?.startsWith('image/'))return toast('Choisis une image.');
+  const btn=$('aiImportBtn');btn.disabled=true;btn.textContent='🤖 Lecture de l’image…';
+  try{
+    const image=await resizeForAI(file);
+    if(image.length>4_000_000)throw new Error('L’image est encore trop lourde. Essaie une capture d’écran moins grande.');
+    const apiUrl=location.hostname.endsWith('github.io')?'https://mandats-conditions.vercel.app/api/extract-person':'/api/extract-person';
+    const r=await fetch(apiUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image})});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.error||'Le serveur IA a refusé la demande.');
+    const x=data.person||{};
+    openEdit();
+    $('editTitle').textContent='Vérifier la fiche créée par l’IA';
+    $('fName').value=x.name||'';$('fNick').value=x.nickname||'';$('fDob').value=x.dob||'';
+    $('fPriority').value=x.priority||'medium';$('fType').value=x.type||view;$('fMandat').value=x.mandat||'';
+    $('fConditions').value=Array.isArray(x.conditions)?x.conditions.join('\n'):'';$('fDescription').value=x.description||'';
+    $('fVehicles').value=Array.isArray(x.vehicles)?x.vehicles.join('\n'):'';$('fAddresses').value=Array.isArray(x.addresses)?x.addresses.join('\n'):'';$('fInfo').value=x.info||'';
+    const uncertain=Array.isArray(x.uncertainFields)?x.uncertainFields:[];
+    $('aiNotice').style.display='block';
+    $('aiNotice').innerHTML='🤖 L’IA a préparé un brouillon. <strong>Vérifie chaque champ avant d’enregistrer.</strong>'+(uncertain.length?`<div class="aiUncertain">⚠️ À vérifier particulièrement : ${esc(uncertain.join(', '))}</div>`:'');
+    toast('✓ Brouillon IA créé — vérifie-le');
+  }catch(e){console.error(e);toast('Erreur : '+e.message)}
+  finally{btn.disabled=false;btn.textContent='🤖 Importer une fiche avec l’IA';$('aiInput').value=''}
 }
 function closeEdit(){$('editOverlay').classList.remove('show');editingId=null}
 async function addPhoto(file,id){if(!file?.type?.startsWith('image/'))return;const p=people.find(x=>x.id===id);if(!p)return;const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const max=1400,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));c.getContext('2d').drawImage(img,0,0,c.width,c.height);p.photos=p.photos||[];p.photos.push(c.toDataURL('image/jpeg',.82));save();openDetail(id);render()};img.src=reader.result};reader.readAsDataURL(file)}
@@ -162,6 +206,8 @@ $('summaryMandats').onclick=()=>{view='mandat';$('mandatsTab').click()};
 $('summaryConditions').onclick=()=>{view='condition';$('conditionsTab').click()};
 $('search').oninput=e=>{searchTerm=e.target.value;render()};
 $('addBtn').onclick=()=>openEdit();
+$('aiImportBtn').onclick=()=>$('aiInput').click();
+$('aiInput').onchange=e=>{const f=e.target.files[0];if(f)importWithAI(f)};
 $('savePerson').onclick=savePerson;
 $('saveBtn').onclick=save;
 $('closeDetail').onclick=closeDetail;$('detailOverlay').onclick=e=>{if(e.target===$('detailOverlay'))closeDetail()};
