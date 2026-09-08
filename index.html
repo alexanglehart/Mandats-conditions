@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Mandats & Conditions</title>
+<style>
+:root{--bg:#f5f5f7;--card:#fff;--text:#111;--muted:#69717d;--line:#e1e3e7;--blue:#347ff0;--red:#d92d20;--orange:#e07b00;--green:#14804a}
+*{box-sizing:border-box}html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+header{position:sticky;top:0;z-index:20;background:rgba(245,245,247,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 10px) 14px 10px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:780px;margin:auto}.brand{font-size:25px;font-weight:900;letter-spacing:-.6px}.save{border:1px solid var(--line);background:#fff;border-radius:13px;padding:9px 11px;font-weight:800;color:var(--blue)}
+.search{display:flex;gap:9px;align-items:center;max-width:780px;margin:11px auto 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 13px}.search input{width:100%;border:0;outline:0;background:transparent;font-size:17px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-width:780px;margin:9px auto 0}.tab{border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px 8px;font-weight:900;color:var(--blue)}.tab.active{background:#111;color:#fff;border-color:#111}
+main{max-width:780px;margin:auto;padding:13px 14px calc(100px + env(safe-area-inset-bottom))}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:9px}.summary button{border:1px solid var(--line);background:#fff;border-radius:17px;padding:14px;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,.035)}.summary .emoji{font-size:25px}.summary h3{margin:5px 0 0;font-size:16px}.summary .num{font-size:24px;font-weight:900;margin-top:3px}
+.sectionHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:20px 0 8px}.sectionHead h2{font-size:20px;margin:0}.muted{color:var(--muted)}
+.person{background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px;margin:9px 0;display:flex;gap:11px;align-items:center}.person:active{transform:scale(.995)}.avatar{width:62px;height:62px;border-radius:14px;object-fit:cover;background:#eceef1;display:grid;place-items:center;font-size:28px;flex:0 0 auto}.personMain{min-width:0;flex:1}.personName{font-weight:900;font-size:17px;overflow-wrap:anywhere}.personNick{font-size:13px;color:var(--muted);margin-top:2px}.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.chip{font-size:10px;font-weight:900;border-radius:999px;padding:4px 7px;background:#eef0f3}.high{background:#fde8e7;color:#b42318}.medium{background:#fff0db;color:#9a5b00}.low{background:#e7f6ee;color:#176b42}.done{opacity:.65}.done .personName{text-decoration:line-through}
+.empty{text-align:center;color:var(--muted);padding:30px 10px;background:#fff;border:1px solid var(--line);border-radius:16px}.divider{height:1px;background:var(--line);margin:20px 0}
+.fab{position:fixed;right:17px;bottom:calc(17px + env(safe-area-inset-bottom));width:59px;height:59px;border:0;border-radius:50%;background:#111;color:#fff;font-size:31px;box-shadow:0 8px 24px rgba(0,0,0,.22);z-index:30}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:40;display:none;align-items:flex-end}.overlay.show{display:flex}.sheet{width:100%;max-height:92vh;overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:16px 14px calc(25px + env(safe-area-inset-bottom))}.sheetInner{max-width:780px;margin:auto}.modalTop{display:flex;justify-content:space-between;align-items:center;gap:10px}.modalTop h2{margin:0;font-size:23px}.close{border:0;background:#e8eaee;border-radius:50%;width:40px;height:40px;font-size:22px}
+.field{margin-top:12px}.field label{display:block;font-size:13px;font-weight:850;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 12px;outline:0}.field textarea{min-height:82px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font-weight:800}.btn.primary{background:#111;color:#fff;border-color:#111}.btn.danger{color:#b42318}.btn.green{color:#176b42}.btn.full{flex:1}
+.detailHeader{display:flex;gap:12px;align-items:center}.detailPhoto{width:88px;height:88px;border-radius:18px;object-fit:cover;background:#e9ebef;flex:0 0 auto}.detailName{font-size:25px;font-weight:950;line-height:1.05}.detailNick{color:var(--muted);margin-top:4px}.block{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px;margin-top:11px}.block h3{margin:0 0 9px;font-size:16px}.infoRow{padding:8px 0;border-top:1px solid var(--line)}.infoRow:first-child{border-top:0;padding-top:0}.infoLabel{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:850}.infoValue{font-size:15px;line-height:1.45;margin-top:2px;white-space:pre-wrap;overflow-wrap:anywhere}.listItem{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-top:1px solid var(--line)}.listItem:first-child{border-top:0;padding-top:0}.removeMini{border:0;background:#f2f3f5;border-radius:9px;padding:4px 7px}.comment{border-top:1px solid var(--line);padding:10px 0}.comment:first-child{border-top:0;padding-top:0}.commentMeta{font-size:11px;color:var(--muted);font-weight:800}.commentText{margin-top:4px;white-space:pre-wrap;line-height:1.45}.photoGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.photoGrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px;background:#eee}.photoControls{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.toast{position:fixed;left:50%;bottom:calc(87px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(15px);background:#111;color:#fff;padding:10px 14px;border-radius:12px;font-weight:800;opacity:0;pointer-events:none;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:700px){.overlay{align-items:center;padding:20px}.sheet{max-width:780px;border-radius:22px;max-height:88vh}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><div class="brand">👮 Mandats & Conditions</div><button class="save" id="saveBtn">💾 Sauvegarder</button></div>
+  <div class="search">🔎 <input id="search" placeholder="Rechercher une personne..."></div>
+  <div class="tabs"><button class="tab active" id="mandatsTab">🔴 Mandats</button><button class="tab" id="conditionsTab">🟠 Conditions</button></div>
+</header>
+
+<main>
+  <div class="summary">
+    <button id="summaryMandats"><div class="emoji">🔴</div><h3>Mandats actifs</h3><div class="num" id="mandatCount">0</div></button>
+    <button id="summaryConditions"><div class="emoji">🟠</div><h3>Conditions actives</h3><div class="num" id="conditionCount">0</div></button>
+  </div>
+  <div id="content"></div>
+</main>
+<button class="fab" id="addBtn" aria-label="Ajouter">＋</button>
+<div class="toast" id="toast"></div>
+
+<div class="overlay" id="detailOverlay"><div class="sheet"><div class="sheetInner">
+  <div class="modalTop"><h2>Fiche personne</h2><button class="close" id="closeDetail">×</button></div>
+  <div id="detail"></div>
+</div></div></div>
+
+<div class="overlay" id="editOverlay"><div class="sheet"><div class="sheetInner">
+  <div class="modalTop"><h2 id="editTitle">Ajouter une personne</h2><button class="close" id="closeEdit">×</button></div>
+  <div class="field"><label>Nom</label><input id="fName" placeholder="Nom et prénom"></div>
+  <div class="field"><label>Surnom</label><input id="fNick" placeholder="Surnom"></div>
+  <div class="row">
+    <div class="field"><label>Date de naissance</label><input id="fDob" type="date"></div>
+    <div class="field"><label>Priorité</label><select id="fPriority"><option value="high">🔴 Élevée</option><option value="medium">🟠 Moyenne</option><option value="low">🟢 Faible</option></select></div>
+  </div>
+  <div class="field"><label>Type de suivi</label><select id="fType"><option value="mandat">🔴 Mandat</option><option value="condition">🟠 Conditions</option></select></div>
+  <div class="field"><label>Mandat</label><input id="fMandat" placeholder="Description du mandat"></div>
+  <div class="field"><label>Conditions</label><textarea id="fConditions" placeholder="Une condition par ligne"></textarea></div>
+  <div class="field"><label>Description</label><textarea id="fDescription" placeholder="Description de la personne"></textarea></div>
+  <div class="field"><label>Véhicules associés</label><textarea id="fVehicles" placeholder="Un véhicule par ligne"></textarea></div>
+  <div class="field"><label>Adresses connues</label><textarea id="fAddresses" placeholder="Une adresse par ligne"></textarea></div>
+  <div class="field"><label>Informations pertinentes</label><textarea id="fInfo" placeholder="Renseignements pertinents"></textarea></div>
+  <div class="actions"><button class="btn primary full" id="savePerson">Enregistrer</button><button class="btn full" id="cancelEdit">Annuler</button></div>
+</div></div></div>
+
+<input type="file" id="photoInput" accept="image/*" capture="environment" hidden>
+<input type="file" id="importInput" accept=".json,application/json" hidden>
+
+<script src="data.js"></script>
+<script>
+const KEY='mandats-conditions-v1-data';
+let people=[], view='mandat', searchTerm='', editingId=null, currentId=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const priorityLabel=p=>p==='high'?'ÉLEVÉE':p==='medium'?'MOYENNE':'FAIBLE';
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));people=Array.isArray(x?.people)?x.people:structuredClone(window.APP_DATA.people)}catch(e){people=structuredClone(window.APP_DATA.people)}}
+function save(){localStorage.setItem(KEY,JSON.stringify({version:'V1.0',savedAt:new Date().toISOString(),people}));toast('✓ Sauvegardé sur cet appareil');}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
+function matches(p){const q=searchTerm.trim().toLowerCase();if(!q)return true;return [p.name,p.nickname,p.description,p.mandat,p.info,...(p.vehicles||[]),...(p.addresses||[]),...(p.conditions||[])].join(' ').toLowerCase().includes(q)}
+function activeList(){return people.filter(p=>p.type===view&&p.status!=='done'&&matches(p)).sort((a,b)=>({high:0,medium:1,low:2}[a.priority]-({high:0,medium:1,low:2}[b.priority]))||a.name.localeCompare(b.name,'fr'))}
+function doneList(){return people.filter(p=>p.type===view&&p.status==='done'&&matches(p)).sort((a,b)=>a.name.localeCompare(b.name,'fr'))}
+function avatar(p){return p.photos?.[0]?`<img class="avatar" src="${p.photos[0]}" alt="">`:`<div class="avatar">👤</div>`}
+function card(p,done=false){return `<div class="person ${done?'done':''}" data-id="${esc(p.id)}">${avatar(p)}<div class="personMain"><div class="personName">${esc(p.name||'Sans nom')}</div><div class="personNick">${p.nickname?'« '+esc(p.nickname)+' » · ':''}${p.dob?esc(new Date(p.dob+'T12:00:00').toLocaleDateString('fr-CA')):''}</div><div class="chips"><span class="chip ${p.priority}">${priorityLabel(p.priority)}</span><span class="chip">${done?'✓ EXÉCUTÉ':'ACTIF'}</span></div></div></div>`}
+function render(){
+  $('mandatCount').textContent=people.filter(p=>p.type==='mandat'&&p.status!=='done').length;
+  $('conditionCount').textContent=people.filter(p=>p.type==='condition'&&p.status!=='done').length;
+  const active=activeList(), done=doneList();
+  let h=`<div class="sectionHead"><h2>${view==='mandat'?'Mandats actifs':'Conditions actives'}</h2><span class="muted">${active.length}</span></div>`;
+  h+=active.length?active.map(p=>card(p)).join(''):`<div class="empty">Aucune personne dans cette section.</div>`;
+  if(done.length){h+=`<div class="divider"></div><div class="sectionHead"><h2>${view==='mandat'?'Mandats exécutés':'Conditions terminées'}</h2><span class="muted">${done.length}</span></div>`;h+=done.map(p=>card(p,true)).join('')}
+  $('content').innerHTML=h;
+  document.querySelectorAll('.person').forEach(e=>e.onclick=()=>openDetail(e.dataset.id));
+}
+function openDetail(id){
+ currentId=id;const p=people.find(x=>x.id===id);if(!p)return;
+ const photos=(p.photos||[]).map((x,i)=>`<img src="${x}" alt="Photo ${i+1}">`).join('');
+ const cond=(p.conditions||[]).map((x,i)=>`<div class="listItem"><span>${esc(x)}</span><button class="removeMini" data-cond="${i}">×</button></div>`).join('')||'<div class="muted">Aucune condition inscrite.</div>';
+ const veh=(p.vehicles||[]).map((x,i)=>`<div class="listItem"><span>${esc(x)}</span><button class="removeMini" data-veh="${i}">×</button></div>`).join('')||'<div class="muted">Aucun véhicule.</div>';
+ const addr=(p.addresses||[]).map((x,i)=>`<div class="listItem"><span>${esc(x)}</span><button class="removeMini" data-addr="${i}">×</button></div>`).join('')||'<div class="muted">Aucune adresse.</div>';
+ const comments=(p.comments||[]).slice().reverse().map(c=>`<div class="comment"><div class="commentMeta">${new Date(c.createdAt).toLocaleString('fr-CA',{dateStyle:'medium',timeStyle:'short'})}</div><div class="commentText">${esc(c.text)}</div></div>`).join('')||'<div class="muted">Aucun commentaire pour le moment.</div>';
+ $('detail').innerHTML=`
+   <div class="block"><div class="detailHeader">${p.photos?.[0]?`<img class="detailPhoto" src="${p.photos[0]}">`:'<div class="detailPhoto" style="display:grid;place-items:center;font-size:40px">👤</div>'}<div><div class="detailName">${esc(p.name||'Sans nom')}</div><div class="detailNick">${p.nickname?'« '+esc(p.nickname)+' »':''}</div><div class="chips"><span class="chip ${p.priority}">${priorityLabel(p.priority)}</span><span class="chip">${p.status==='done'?'✓ TERMINÉ':'ACTIF'}</span></div></div></div></div>
+   <div class="block"><h3>📋 Informations</h3>
+     <div class="infoRow"><div class="infoLabel">Date de naissance</div><div class="infoValue">${p.dob?esc(new Date(p.dob+'T12:00:00').toLocaleDateString('fr-CA')):'—'}</div></div>
+     <div class="infoRow"><div class="infoLabel">Description</div><div class="infoValue">${esc(p.description||'—')}</div></div>
+     <div class="infoRow"><div class="infoLabel">Informations pertinentes</div><div class="infoValue">${esc(p.info||'—')}</div></div>
+   </div>
+   ${p.type==='mandat'?`<div class="block"><h3>🔴 Mandat</h3><div class="infoValue">${esc(p.mandat||'Aucun détail inscrit.')}</div></div>`:''}
+   <div class="block"><h3>⚠️ Conditions</h3>${cond}</div>
+   <div class="block"><h3>🚗 Véhicules associés</h3>${veh}</div>
+   <div class="block"><h3>🏠 Adresses connues</h3>${addr}</div>
+   <div class="block"><h3>📷 Photos</h3><div class="photoGrid">${photos||'<div class="muted">Aucune photo.</div>'}</div><div class="photoControls"><button class="btn" id="addPhoto">📷 Ajouter une photo</button></div></div>
+   <div class="block"><h3>💬 Journal / commentaires</h3>${comments}<div class="field"><textarea id="newComment" placeholder="Ajouter un nouveau renseignement ou une démarche effectuée..."></textarea></div><div class="actions"><button class="btn primary" id="addComment">Ajouter au journal</button></div></div>
+   <div class="block"><div class="actions">
+      <button class="btn primary full" id="editPerson">✏️ Modifier</button>
+      ${p.status==='done'?'<button class="btn green full" id="reactivate">↩️ Réactiver</button>':'<button class="btn green full" id="complete">✓ '+(p.type==='mandat'?'Mandat exécuté':'Conditions terminées')+'</button>'}
+      <button class="btn danger full" id="deletePerson">🗑️ Supprimer</button>
+   </div></div>`;
+ $('detailOverlay').classList.add('show');
+ $('editPerson').onclick=()=>openEdit(p.id);
+ $('deletePerson').onclick=()=>deletePerson(p.id);
+ if($('complete'))$('complete').onclick=()=>completePerson(p.id);
+ if($('reactivate'))$('reactivate').onclick=()=>{p.status='active';save();openDetail(p.id);render()};
+ $('addComment').onclick=()=>{const t=$('newComment').value.trim();if(!t)return toast('Écris un commentaire.');p.comments=p.comments||[];p.comments.push({id:'c-'+Date.now(),text:t,createdAt:new Date().toISOString()});save();openDetail(p.id)};
+ $('addPhoto').onclick=()=>{$('photoInput').dataset.personId=p.id;$('photoInput').click()};
+ document.querySelectorAll('[data-cond]').forEach(b=>b.onclick=e=>{e.stopPropagation();p.conditions.splice(+b.dataset.cond,1);save();openDetail(p.id)});
+ document.querySelectorAll('[data-veh]').forEach(b=>b.onclick=e=>{e.stopPropagation();p.vehicles.splice(+b.dataset.veh,1);save();openDetail(p.id)});
+ document.querySelectorAll('[data-addr]').forEach(b=>b.onclick=e=>{e.stopPropagation();p.addresses.splice(+b.dataset.addr,1);save();openDetail(p.id)});
+}
+function completePerson(id){const p=people.find(x=>x.id===id);if(!p)return;if(!confirm((p.type==='mandat'?'Marquer le mandat comme exécuté ?':'Marquer les conditions comme terminées ?')))return;p.status='done';save();closeDetail();render()}
+function deletePerson(id){const p=people.find(x=>x.id===id);if(!p)return;if(!confirm('Supprimer cette personne de l’application ?'))return;people=people.filter(x=>x.id!==id);save();closeDetail();render()}
+function closeDetail(){$('detailOverlay').classList.remove('show');currentId=null}
+function openEdit(id=null){editingId=id;const p=id?people.find(x=>x.id===id):{name:'',nickname:'',dob:'',priority:'medium',type:view,mandat:'',conditions:[],description:'',vehicles:[],addresses:[],info:'',comments:[],photos:[],status:'active'};if(!p)return;
+ $('editTitle').textContent=id?'Modifier la personne':'Ajouter une personne';
+ $('fName').value=p.name||'';$('fNick').value=p.nickname||'';$('fDob').value=p.dob||'';$('fPriority').value=p.priority||'medium';$('fType').value=p.type||view;$('fMandat').value=p.mandat||'';$('fConditions').value=(p.conditions||[]).join('\\n');$('fDescription').value=p.description||'';$('fVehicles').value=(p.vehicles||[]).join('\\n');$('fAddresses').value=(p.addresses||[]).join('\\n');$('fInfo').value=p.info||'';
+ $('editOverlay').classList.add('show');
+}
+function savePerson(){
+ const name=$('fName').value.trim();if(!name)return toast('Le nom est requis.');
+ const existing=editingId?people.find(x=>x.id===editingId):null;
+ const p=existing||{id:'p-'+Date.now(),comments:[],photos:[],status:'active'};
+ Object.assign(p,{name,nickname:$('fNick').value.trim(),dob:$('fDob').value,priority:$('fPriority').value,type:$('fType').value,mandat:$('fMandat').value.trim(),conditions:$('fConditions').value.split('\\n').map(x=>x.trim()).filter(Boolean),description:$('fDescription').value.trim(),vehicles:$('fVehicles').value.split('\\n').map(x=>x.trim()).filter(Boolean),addresses:$('fAddresses').value.split('\\n').map(x=>x.trim()).filter(Boolean),info:$('fInfo').value.trim()});
+ if(!existing)people.push(p);save();closeEdit();render();openDetail(p.id);
+}
+function closeEdit(){$('editOverlay').classList.remove('show');editingId=null}
+async function addPhoto(file,id){if(!file?.type?.startsWith('image/'))return;const p=people.find(x=>x.id===id);if(!p)return;const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const max=1400,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));c.getContext('2d').drawImage(img,0,0,c.width,c.height);p.photos=p.photos||[];p.photos.push(c.toDataURL('image/jpeg',.82));save();openDetail(id);render()};img.src=reader.result};reader.readAsDataURL(file)}
+$('photoInput').onchange=e=>{const f=e.target.files[0];const id=e.target.dataset.personId;if(f)addPhoto(f,id);e.target.value=''};
+$('mandatsTab').onclick=()=>{view='mandat';$('mandatsTab').classList.add('active');$('conditionsTab').classList.remove('active');render()};
+$('conditionsTab').onclick=()=>{view='condition';$('conditionsTab').classList.add('active');$('mandatsTab').classList.remove('active');render()};
+$('summaryMandats').onclick=()=>{view='mandat';$('mandatsTab').click()};
+$('summaryConditions').onclick=()=>{view='condition';$('conditionsTab').click()};
+$('search').oninput=e=>{searchTerm=e.target.value;render()};
+$('addBtn').onclick=()=>openEdit();
+$('saveBtn').onclick=save;
+$('closeDetail').onclick=closeDetail;$('detailOverlay').onclick=e=>{if(e.target===$('detailOverlay'))closeDetail()};
+$('closeEdit').onclick=closeEdit;$('cancelEdit').onclick=closeEdit;$('editOverlay').onclick=e=>{if(e.target===$('editOverlay'))closeEdit()};
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeEdit()}});
+load();render();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
+</script>
+</body>
+</html>
