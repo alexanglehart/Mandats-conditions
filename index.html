@@ -157,6 +157,7 @@ $('summaryMandats').onclick=()=>{view='mandat';$('mandatsTab').click()};
 $('summaryConditions').onclick=()=>{view='condition';$('conditionsTab').click()};
 $('search').oninput=e=>{searchTerm=e.target.value;render()};
 $('addBtn').onclick=()=>openEdit();
+$('savePerson').onclick=savePerson;
 $('saveBtn').onclick=save;
 $('closeDetail').onclick=closeDetail;$('detailOverlay').onclick=e=>{if(e.target===$('detailOverlay'))closeDetail()};
 $('closeEdit').onclick=closeEdit;$('cancelEdit').onclick=closeEdit;$('editOverlay').onclick=e=>{if(e.target===$('editOverlay'))closeEdit()};
