@@ -69,7 +69,8 @@ main{max-width:780px;margin:auto;padding:13px 14px calc(100px + env(safe-area-in
   <div class="actions"><button class="btn primary full" id="savePerson">Enregistrer</button><button class="btn full" id="cancelEdit">Annuler</button></div>
 </div></div></div>
 
-<input type="file" id="photoInput" accept="image/*" capture="environment" hidden>
+<input type="file" id="photoInput" accept="image/*" hidden>
+<input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
 <input type="file" id="importInput" accept=".json,application/json" hidden>
 
 <script src="data.js"></script>
@@ -115,7 +116,7 @@ function openDetail(id){
    <div class="block"><h3>⚠️ Conditions</h3>${cond}</div>
    <div class="block"><h3>🚗 Véhicules associés</h3>${veh}</div>
    <div class="block"><h3>🏠 Adresses connues</h3>${addr}</div>
-   <div class="block"><h3>📷 Photos</h3><div class="photoGrid">${photos||'<div class="muted">Aucune photo.</div>'}</div><div class="photoControls"><button class="btn" id="addPhoto">📷 Ajouter une photo</button></div></div>
+   <div class="block"><h3>📷 Photos</h3><div class="photoGrid">${photos||'<div class="muted">Aucune photo.</div>'}</div><div class="photoControls"><button class="btn" id="choosePhoto">🖼️ Choisir dans les photos</button><button class="btn" id="takePhoto">📷 Prendre une photo</button></div></div>
    <div class="block"><h3>💬 Journal / commentaires</h3>${comments}<div class="field"><textarea id="newComment" placeholder="Ajouter un nouveau renseignement ou une démarche effectuée..."></textarea></div><div class="actions"><button class="btn primary" id="addComment">Ajouter au journal</button></div></div>
    <div class="block"><div class="actions">
       <button class="btn primary full" id="editPerson">✏️ Modifier</button>
@@ -128,7 +129,8 @@ function openDetail(id){
  if($('complete'))$('complete').onclick=()=>completePerson(p.id);
  if($('reactivate'))$('reactivate').onclick=()=>{p.status='active';save();openDetail(p.id);render()};
  $('addComment').onclick=()=>{const t=$('newComment').value.trim();if(!t)return toast('Écris un commentaire.');p.comments=p.comments||[];p.comments.push({id:'c-'+Date.now(),text:t,createdAt:new Date().toISOString()});save();openDetail(p.id)};
- $('addPhoto').onclick=()=>{$('photoInput').dataset.personId=p.id;$('photoInput').click()};
+ $('choosePhoto').onclick=()=>{$('photoInput').dataset.personId=p.id;$('photoInput').click()};
+ $('takePhoto').onclick=()=>{$('cameraInput').dataset.personId=p.id;$('cameraInput').click()};
  document.querySelectorAll('[data-cond]').forEach(b=>b.onclick=e=>{e.stopPropagation();p.conditions.splice(+b.dataset.cond,1);save();openDetail(p.id)});
  document.querySelectorAll('[data-veh]').forEach(b=>b.onclick=e=>{e.stopPropagation();p.vehicles.splice(+b.dataset.veh,1);save();openDetail(p.id)});
  document.querySelectorAll('[data-addr]').forEach(b=>b.onclick=e=>{e.stopPropagation();p.addresses.splice(+b.dataset.addr,1);save();openDetail(p.id)});
@@ -150,7 +152,9 @@ function savePerson(){
 }
 function closeEdit(){$('editOverlay').classList.remove('show');editingId=null}
 async function addPhoto(file,id){if(!file?.type?.startsWith('image/'))return;const p=people.find(x=>x.id===id);if(!p)return;const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const max=1400,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));c.getContext('2d').drawImage(img,0,0,c.width,c.height);p.photos=p.photos||[];p.photos.push(c.toDataURL('image/jpeg',.82));save();openDetail(id);render()};img.src=reader.result};reader.readAsDataURL(file)}
-$('photoInput').onchange=e=>{const f=e.target.files[0];const id=e.target.dataset.personId;if(f)addPhoto(f,id);e.target.value=''};
+function handlePhotoInput(e){const f=e.target.files[0];const id=e.target.dataset.personId;if(f)addPhoto(f,id);e.target.value=''}
+$('photoInput').onchange=handlePhotoInput;
+$('cameraInput').onchange=handlePhotoInput;
 $('mandatsTab').onclick=()=>{view='mandat';$('mandatsTab').classList.add('active');$('conditionsTab').classList.remove('active');render()};
 $('conditionsTab').onclick=()=>{view='condition';$('conditionsTab').classList.add('active');$('mandatsTab').classList.remove('active');render()};
 $('summaryMandats').onclick=()=>{view='mandat';$('mandatsTab').click()};
