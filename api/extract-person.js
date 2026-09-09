@@ -312,6 +312,7 @@ Lire la capture et préparer un brouillon de personne pour notre application.
 RÈGLES :
 - Lis uniquement ce qui est réellement visible. N'invente jamais une information.
 - Chaque champ visible doit être retourné, même s'il n'est pas utilisé directement par l'application.
+- Ne laisse jamais NOM, DDN, MARQUE, MODÈLE, AU, NIV ou ADR sans valeur si leur valeur est lisible sur l'image.
 - Sépare TOUJOURS le libellé de sa valeur.
 - Exemple : "NOM Mathieu" => label="NOM", value="Mathieu".
 - Si plusieurs mots suivent un libellé, ils appartiennent à la valeur jusqu'au prochain libellé visible.
@@ -345,6 +346,7 @@ IMPORTANT :
 - SEXE, YEUX, STATUT, DROIT DE CIRCULER et NO DOSSIER restent normalement dans info.
 - Ne transforme jamais ces champs en mandat, condition, priorité, adresse ou véhicule.
 - Ne crée jamais une adresse à partir d'une simple ville si l'écran ne permet pas de le confirmer.
+- Si une ligne contient plusieurs champs, sépare-les logiquement : par exemple 'AU 2016 Noir' contient l'année 2016 et la couleur Noir, mais ne mélange pas ces données avec la marque ou le modèle.
 - Les lignes inconnues restent dans info plutôt que d'être inventées ou supprimées.
 
 Ne produis aucune explication. Retourne uniquement le JSON demandé.
@@ -358,7 +360,7 @@ Ne produis aucune explication. Retourne uniquement le JSON demandé.
         'Authorization': `Bearer ${key}`
       },
       body: JSON.stringify({
-        model: 'gpt-5.6-terra',
+        model: 'gpt-5.6-luna',
         store: false,
         input: [{
           role: 'user',
